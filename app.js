@@ -26,17 +26,17 @@ app.use(express.json());
 //   console.log(`[${new Date().toISOString()}] ${req.method} to ${req.path}`);
 //   next(); // Don't forget to call next()!
 // });
-// app.use((req, res, next) => {
-//   const date = new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' });
-//   console.log(`[${date}] ${req.method} to ${req.path}`);
-//   next(); // Don't forget to call next()!
-// });
+app.use((req, res, next) => {
+  const date = new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' });
+  console.log(`[${date}] ${req.method} to ${req.path}`);
+  next(); // Don't forget to call next()!
+});
 
 //GET all users
 app.get("/api/users", async (req, res) => {
   let users = await getUsers();
   res.json(users)
-  console.log(users);
+  console.log("this is going to get all users");
   
   //send data in required format
   // res.send({
@@ -47,29 +47,37 @@ app.get("/api/users", async (req, res) => {
 
 //GET user by ID
 app.get("/api/users/:id", async (req, res) => {
-  // const users = await getUsers();
-  // const theUser = users.find((user) => user.id === req.params.id);
-  // if (theUser) {
-  //   res.send({
-  //     success: true,
-  //     payload: theUser,
-  //   });
-  // } else {
-  //   res.status(404).send({
-  //     success: false,
-  //     message: "Hmm we don't seem to have a user with that ID",
-  //   });
-  // }
+  //use getUserByID function to get user by ID
+  let usersId = req.params.id;
+  let getUsersId = await getUserByID(usersId);
+  res.json(getUsersId);
+  console.log("This will get a user by ID");
 });
 
 //POST aka create a new user
+//{ success: true, payload: newly created user object }
+//use createUser function to create a new user
+//To test need to add test data to the body of the request
+app.post("/api/users", async (req, res) => {
+  let newUser = req.body;
+  res.json(await createUser(newUser));
+  console.log("This will create a new user");
+});
 
 
 //PATCH aka update a user by ID
+//{ success: true, payload: new user object (after replacement) }
+//use updateUserByID function to update a user by ID
+app.patch("/api/users/:id", async (req, res) => {
 
+});
 
 //DELETE aka delete a user by ID
+//{ success: true, payload: deleted user }
+//use deleteUserByID function to delete a user by ID
+app.delete("/api/users/:id", async (req, res) => {
 
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
