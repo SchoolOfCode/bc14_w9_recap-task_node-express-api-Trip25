@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= stylesheet href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
     <title>User Form</title>
 </head>
 <body>
@@ -13,21 +17,32 @@
 
     <h6>You may or may not win £1million, this is not guaranteed.. </h6>
     <form type="submit">
-        <label for="name">First Name: 
+        <label for="first-name">First Name: 
             <input type="text" id="first-name" placeholder="Enter your first name">
         </label>
-        <label for="name">Last Name: 
-            <input type="text" id="Last-name" placeholder="Enter your last name">
+        <label for="last-name">Last Name: 
+            <input type="text" id="last-name" placeholder="Enter your last name">
         </label>
-        <label for="name">Email address: 
-            <input type="text" id="Last-name" placeholder="Enter your email address">
+        <label for="email">Email address: 
+            <input type="email" id="email" placeholder="ineedmoney@example.com" aria-required="">
         </label>
-        <label for="name">Catchphrase: 
-            <input type="text" id="Last-name" placeholder="Enter your catch phrase">
+        <label for="catchphrase">Catchphrase: 
+            <input type="text" id="catchphrase" placeholder="Enter your catch phrase">
         </label>
         <button type="submit" id="submitBtn">Submit</button>
     </form>
+    <article>   
+        <h4>Thank you for entering!</h4>
+        <section>
+            <ul>
+                <li id="firstNameHistory"></li>
+                <li id="lastNameHistory"></li>
+                <li id="emailAddressHistory"></li>
+                <li id="catchphraseHistory"></li>
+            </ul>
+        </section>
+    </article>
 
-    <scripti src="./main.js"></scripti>
+    <script src="./main.js"></script>
 </body>
 </html>
