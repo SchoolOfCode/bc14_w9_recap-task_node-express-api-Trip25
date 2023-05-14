@@ -3,6 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 
 const fileName = "users.json";
 
+//Adddd a new helper fucntion to read and write to the users.json file
+// async function saveUsers(users) {
+//     const json = JSON.stringify(users);
+//     await fs.writeFile(fileName, json, { encoding: "utf-8" });
+// }
+
 //GET all users
 export async function getUsers() {
     const data = await fs.readFile(fileName, "utf-8");
@@ -82,4 +88,20 @@ export async function updateUserByID(id, updatedUser) {
 }
 
 //Delete a user by ID
-export async function deleteUserByID(id) {}
+export async function deleteUserByID(id) {
+    //get existing users
+    const users = await getUsers();
+    //find the index of matching user
+    const index = users.findIndex((user) => user.id === id);
+
+    //remove that user from the array
+    //save the array back to the file
+    if (index >= 0) {
+        const [deletedUsers] = users.splice(index, 1);
+      //save changes to file
+        const json = JSON.stringify(users);
+        await fs.writeFile(fileName, json, { encoding: "utf-8"});
+
+    return deletedUsers;
+    }
+}

@@ -100,7 +100,23 @@ app.patch("/api/users/:id", async (req, res) => {
 //{ success: true, payload: deleted user }
 //use deleteUserByID function to delete a user by ID
 app.delete("/api/users/:id", async (req, res) => {
+  const id = req.params.id;
+  const payload = await deleteUserByID(id);
 
+  const success = payload !== undefined;
+  
+  if (success) {
+    const body = {
+    success: success,
+    payload: payload,
+    };
+    return res.json(body);
+  }
+  res.status(404).json({
+    success: false,
+    payload: `User with ID ${id} not found`,});
+
+  res.json(body);
 });
 
 app.listen(port, () => {
