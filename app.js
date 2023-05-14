@@ -77,8 +77,23 @@ app.post("/api/users", async (req, res) => {
 //PATCH aka update a user by ID
 //{ success: true, payload: new user object (after replacement) }
 //use updateUserByID function to update a user by ID
+// FOR TESTING id: 6dc2e64c-50f0-45f4-88c8-5c6347041a7a
 app.patch("/api/users/:id", async (req, res) => {
-
+  const id = req.params.id;
+  const updatedUser = req.body;
+  const payload = await updateUserByID(id, updatedUser);
+  const success = payload !== undefined;
+  
+  if (success) {
+    const body = {
+    success: success,
+    payload: payload,
+    };
+    return res.json(body);
+  }
+  res.status(404).json({
+    success: false,
+    payload: `User with ID ${id} not found`,});
 });
 
 //DELETE aka delete a user by ID

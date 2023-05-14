@@ -5,9 +5,10 @@ const fileName = "users.json";
 
 //GET all users
 export async function getUsers() {
-    let data = await fs.readFile(fileName, "utf-8");
-    let usersObject = JSON.parse(data);
-    return { success: true, payload : usersObject };
+    const data = await fs.readFile(fileName, "utf-8");
+    const usersObject = JSON.parse(data);
+    // return { success: true, payload : usersObject }
+    return usersObject;
 }
 //Get user by ID
 export async function getUserByID(id) {
@@ -37,12 +38,12 @@ export async function getUserByID(id) {
 //Create a new user
 export async function createUser(newUser) {
     //read all of the existing users
-    let users = await getUsers();
+    const users = await getUsers();
     // create a new user object (with a unique ID using uuidv4())
         // merge the new user object with an id
-        const postNewUser = {
-            id: uuidv4(),
-            ...newUser,
+    const postNewUser = {
+        id: uuidv4(),
+        ...newUser,
         };
     // add the new user object to existing users
     users.push(postNewUser);
@@ -56,7 +57,28 @@ export async function createUser(newUser) {
 
 //Update a user by ID
 export async function updateUserByID(id, updatedUser) {
+    //get exising users
+    const users = await getUsers();
+    //modify a user with the given ID in the existing users
+    //find the index of the user with the given ID
+    const index = users.findIndex((user) => user.id === id);
+    if (index >= 0) {
+        const preupdatedUser = users[index];
+        const postupdatedUser = {
+            ...preupdatedUser,
+            ...updatedUser,
+            id: id,
+        };
+        users[index] = postupdatedUser;
 
+        //save changes to file
+        const json = JSON.stringify(users);
+        await fs.writeFile(fileName, json, { encoding: "utf-8"});
+
+        return users[index];
+        //update the item in the array with that index
+        //merge the existing user with the updated user
+    };
 }
 
 //Delete a user by ID
