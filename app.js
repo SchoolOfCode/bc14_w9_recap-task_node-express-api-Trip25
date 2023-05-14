@@ -50,6 +50,7 @@ app.get("/api/users/:id", async (req, res) => {
   //use getUserByID function to get user by ID
   let usersId = req.params.id;
   let getUsersId = await getUserByID(usersId);
+  const success = getUsersId !== undefined;
   res.json(getUsersId);
   console.log("This will get a user by ID");
 });
@@ -59,9 +60,17 @@ app.get("/api/users/:id", async (req, res) => {
 //use createUser function to create a new user
 //To test need to add test data to the body of the request
 app.post("/api/users", async (req, res) => {
-  let newUser = req.body;
-  res.json(await createUser(newUser));
+  const newUserWithoutId = req.body;
+  //use CreateUser helper function
+  const payload = await createUser(newUserWithoutId);
   console.log("This will create a new user");
+
+  const body = {
+    success: true,
+    payload: payload,
+  };
+    //send the newly create recipe back to the client which should also include the id
+    res.json(body);
 });
 
 
