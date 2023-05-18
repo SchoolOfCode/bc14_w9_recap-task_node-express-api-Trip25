@@ -54,8 +54,18 @@ app.get("/api/users/:id", async (req, res) => {
   let usersId = req.params.id;
   let getUsersId = await getUserByID(usersId);
   const success = getUsersId !== undefined;
-  res.json(getUsersId);
-  console.log("This will get a user by ID");
+  if (success) {
+    const body = {
+    success: success,
+    payload: payload,
+  };
+  res.json(body);}
+    res.status(404).json({
+      success: false,
+      payload: `User with ID ${id} not found`,});
+  
+    res.json(body);
+  console.log("This will get a user by ID or throw an error if not found");
 });
 
 //POST aka create a new user
@@ -67,13 +77,19 @@ app.post("/api/users", async (req, res) => {
   //use CreateUser helper function
   const payload = await createUser(newUserWithoutId);
   console.log("This will create a new user");
-
-  const body = {
-    success: true,
-    payload: payload,
-  };
+  const success = payload !== undefined;
+  if(success){
+    const body = {
+      success: true,
+      payload: payload,
+    };
     //send the newly create recipe back to the client which should also include the id
     res.json(body);
+  }
+  //error handling
+  res.status(400).json({
+    success: false,
+    payload: "The request was malformed",});
 });
 
 
@@ -118,7 +134,7 @@ app.delete("/api/users/:id", async (req, res) => {
   res.status(404).json({
     success: false,
     payload: `User with ID ${id} not found`,});
-
+//
   res.json(body);
 });
 
